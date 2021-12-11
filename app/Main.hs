@@ -1,6 +1,14 @@
 module Main where
 
-import Data.List
+import Data.List ( transpose )
+import Numeric.Natural ()
+
+slidingWindow :: Int -> [a] -> [[a]]
+slidingWindow size list =
+    transpose $ [subList i | i <- [0..size-1]]
+  where
+    subList i = (take len . drop i) list
+    len = length list - size
 
 day1part1 :: [Int] -> Int
 day1part1 depths =
@@ -12,18 +20,13 @@ day1part2 :: [Int] -> Int
 day1part2 depths =
     length $ filter id increases
   where
-    windows = filter ((== 3) . length) $ transpose
-      [ depths
-      , tail depths
-      , tail $ tail depths
-      ]
-    sums = sum <$> windows
+    sums = sum <$> slidingWindow 3 depths
     increases = zipWith (>) (tail sums) sums
 
 main :: IO ()
 main = do
-    day1 <- readFile "res/day1/input.txt"
-    let day1depths = read <$> lines day1
-    print $ day1part1 day1depths
-    print $ day1part2 day1depths
+    bytes <- readFile "res/day1/input.txt"
+    let depths = read <$> lines bytes
+    print $ day1part1 depths
+    print $ day1part2 depths
     pure ()
