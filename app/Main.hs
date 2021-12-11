@@ -1,7 +1,6 @@
 module Main where
 
 import Data.List ( transpose )
-import Numeric.Natural ()
 
 slidingWindow :: Int -> [a] -> [[a]]
 slidingWindow size list =
