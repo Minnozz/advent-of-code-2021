@@ -33,6 +33,17 @@ getPos commands = uncurry (*) $ foldl move start commands
       Down x -> (pos, depth + x)
       Up x -> (pos, depth - x)
 
+getPosWithAim :: [Command] -> Integer
+getPosWithAim commands =
+    let (pos, depth, _aim) = foldl move start commands in
+    pos * depth
+  where
+    start = (0, 0, 0)
+    move (pos, depth, aim) = \case
+      Forward x -> (pos + x, depth + aim * x, aim)
+      Down x -> (pos, depth, aim + x)
+      Up x -> (pos, depth, aim - x)
+
 main :: IO ()
 main = do
   input <- readFile infile
@@ -40,8 +51,8 @@ main = do
   case eCommands of
     Left errors -> print errors
     Right commands -> do
-      print commands
       print ("Part 1", getPos commands)
+      print ("Part 2", getPosWithAim commands)
   pure ()
   where
     infile = "res/day2/input.txt"
