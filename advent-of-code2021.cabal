@@ -17,3 +17,8 @@ executable day2
     import: shared
     hs-source-dirs:   app/day2
     main-is:          Main.hs
+
+executable day3
+    import: shared
+    hs-source-dirs:   app/day3
+    main-is:          Main.hs
